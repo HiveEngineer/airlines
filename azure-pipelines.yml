@@ -1,0 +1,51 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+variables:
+  databricksWorkspaceUrl: https://adb-2180270966638446.6.azuredatabricks.net/?o=2180270966638446
+  databricksPatToken: dapif2f0e33fc7c62ade6de94f063c450f22-2
+
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.7'
+
+- script: |
+    python -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+    pip install pytest pytest-azurepipelines
+  displayName: 'Install dependencies'
+
+# add Spark installation
+- script: |
+    source venv/bin/activate
+    wget https://dlcdn.apache.org/spark/spark-3.4.0/spark-3.4.0-bin-hadoop3.tgz
+    tar xvf spark-3.4.0-bin-hadoop3.tgz
+  displayName: 'Install Spark'
+
+# add Databricks CLI installation
+- script: |
+    source venv/bin/activate
+    pip install databricks-cli
+  displayName: 'Install Databricks CLI'
+
+- task: configuredatabricks@0
+  inputs:
+    url: '$(databricksWorkspaceUrl)'
+    token: '$(databricksPatToken)'
+
+- script: |
+    source venv/bin/activate
+    databricks workspace import ./airline_etl.py /Users/olawale.sobogungod@giggabytes.org/airline_etl.py --overwrite --language PYTHON
+  env:
+    DATABRICKS_HOST: '$(databricksWorkspaceUrl)'
+    DATABRICKS_TOKEN: '$(databricksPatToken)'
