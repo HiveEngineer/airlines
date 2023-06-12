@@ -1,0 +1,305 @@
+{
+	"name": "SalesStagingTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SalesStagingTableDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Flight_ID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Air_Name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "City",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Country_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "date_time",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "site_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "posa_continent",
+				"type": "nvarchar"
+			},
+			{
+				"name": "user_location_country",
+				"type": "nvarchar"
+			},
+			{
+				"name": "user_location_city",
+				"type": "nvarchar"
+			},
+			{
+				"name": "orig_destination_distance",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "user_id",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "is_mobile",
+				"type": "bit"
+			},
+			{
+				"name": "is_package",
+				"type": "bit"
+			},
+			{
+				"name": "channel",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "srch_ci",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "srch_co",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "srch_adults_cnt",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "srch_children_cnt",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "srch_rm_cnt",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "srch_destination_id",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "srch_destination_type_id",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "hotel_continent",
+				"type": "nvarchar"
+			},
+			{
+				"name": "hotel_country",
+				"type": "nvarchar"
+			},
+			{
+				"name": "hotel_market",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "is_booking",
+				"type": "bit"
+			},
+			{
+				"name": "cnt",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "hotel_cluster",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "A_ID",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "Capacity",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "A_weight",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Company",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Route_ID",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "Take_Off_point",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Destination",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ps_ID",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "Ps_Name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Address",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Age",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "Sex",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Contacts",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Air_code",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Departure_time",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Arrival_time",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Duration_Hours",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "Total_seat_on_flight",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "Occupied_seat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Seat_change_fee",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ticket_Price",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Connecting_flights",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "waiting_hours",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "Weather_Forecast",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Cancelled_Flights",
+				"type": "bit"
+			},
+			{
+				"name": "Waiting_time_for_cancelled_flight",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "Hotel_offered",
+				"type": "bit"
+			},
+			{
+				"name": "Voucher_Prices",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "Ticket_Changed",
+				"type": "bit"
+			},
+			{
+				"name": "Flight_delayed",
+				"type": "bit"
+			},
+			{
+				"name": "Change_in_price",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "Penalty_fee",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "Flight_Class",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Regular_Traveler",
+				"type": "bit"
+			},
+			{
+				"name": "Payment_method",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Baggage_Allowance",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Miles_and_More_point",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Sales"
+		}
+	}
+}

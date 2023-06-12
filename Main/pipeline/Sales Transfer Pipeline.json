@@ -1,0 +1,116 @@
+{
+	"name": "Sales Transfer Pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Load_Sales_Stage",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Truncate Sales",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "ExcelSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "SaleData",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "SalesStagingTable",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Truncate Sales",
+				"description": "This SP truncates the Sales staging table before loading new data",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[sp_TruncateSalesTable]"
+				},
+				"linkedServiceName": {
+					"referenceName": "SalesStagingTableDB",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Load_Fact_Dim",
+				"description": "This SP loads the fact and dimension tables ",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Load_Sales_Stage",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[upsert_data]"
+				},
+				"linkedServiceName": {
+					"referenceName": "SalesStagingTableDB",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"folder": {
+			"name": "Files_to_Sales_Tables"
+		},
+		"annotations": []
+	}
+}

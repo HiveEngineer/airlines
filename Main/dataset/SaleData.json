@@ -1,0 +1,19 @@
+{
+	"name": "SaleData",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SalesDataStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "mock_data.csv",
+				"fileSystem": "flights-details"
+			}
+		},
+		"schema": []
+	}
+}
