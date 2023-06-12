@@ -1,0 +1,13 @@
+{
+	"name": "SalesDataStorage",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"description": "This storage account where the files are dropped either from email using Logic App or Uploaded ",
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://dbfabric.dfs.core.windows.net/",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDEyNzZCMjRBLUU3MjktNERBNC05NEMyLTUzMzM1NTM4OTQ4M184NDYyYmEyMC01NjQ2LTQ3ZmMtOTY2Yi00ZTM5ZjAxOTY0YTciDQp9"
+		}
+	}
+}
