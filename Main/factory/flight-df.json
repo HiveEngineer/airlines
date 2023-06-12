@@ -1,0 +1,9 @@
+{
+	"name": "flight-df",
+	"location": "northeurope",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "e1cbc05a-1f3f-4aeb-875a-9dba04d8c5f3",
+		"tenantId": "486efef4-96af-4776-aaf2-fea23d7f1820"
+	}
+}
