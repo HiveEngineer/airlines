@@ -8,6 +8,7 @@
 		"annotations": [],
 		"type": "Excel",
 		"typeProperties": {
+			"sheetName": "mock_data",
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": "mock_data.csv",
