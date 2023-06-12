@@ -11,6 +11,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": "mock_data.csv",
+				"folderPath": "*",
 				"fileSystem": "flights-details"
 			}
 		},
