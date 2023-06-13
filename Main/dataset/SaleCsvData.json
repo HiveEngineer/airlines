@@ -1,0 +1,280 @@
+{
+	"name": "SaleCsvData",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SalesCsvDataLakeStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "mock_data1.csv",
+				"fileSystem": "flights-details"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Flight_ID",
+				"type": "String"
+			},
+			{
+				"name": "Air_Name",
+				"type": "String"
+			},
+			{
+				"name": "City",
+				"type": "String"
+			},
+			{
+				"name": "Country_code",
+				"type": "String"
+			},
+			{
+				"name": "date_time",
+				"type": "String"
+			},
+			{
+				"name": "site_name",
+				"type": "String"
+			},
+			{
+				"name": "posa_continent",
+				"type": "String"
+			},
+			{
+				"name": "user_location_country",
+				"type": "String"
+			},
+			{
+				"name": "user_location_city",
+				"type": "String"
+			},
+			{
+				"name": "orig_destination_distance",
+				"type": "String"
+			},
+			{
+				"name": "user_id",
+				"type": "String"
+			},
+			{
+				"name": "is_mobile",
+				"type": "String"
+			},
+			{
+				"name": "is_package",
+				"type": "String"
+			},
+			{
+				"name": "channel",
+				"type": "String"
+			},
+			{
+				"name": "srch_ci",
+				"type": "String"
+			},
+			{
+				"name": "srch_co",
+				"type": "String"
+			},
+			{
+				"name": "srch_adults_cnt",
+				"type": "String"
+			},
+			{
+				"name": "srch_children_cnt",
+				"type": "String"
+			},
+			{
+				"name": "srch_rm_cnt",
+				"type": "String"
+			},
+			{
+				"name": "srch_destination_id",
+				"type": "String"
+			},
+			{
+				"name": "srch_destination_type_id",
+				"type": "String"
+			},
+			{
+				"name": "hotel_continent",
+				"type": "String"
+			},
+			{
+				"name": "hotel_country",
+				"type": "String"
+			},
+			{
+				"name": "hotel_market",
+				"type": "String"
+			},
+			{
+				"name": "is_booking",
+				"type": "String"
+			},
+			{
+				"name": "cnt",
+				"type": "String"
+			},
+			{
+				"name": "hotel_cluster",
+				"type": "String"
+			},
+			{
+				"name": "A_ID",
+				"type": "String"
+			},
+			{
+				"name": "Capacity",
+				"type": "String"
+			},
+			{
+				"name": "A_weight",
+				"type": "String"
+			},
+			{
+				"name": "Company",
+				"type": "String"
+			},
+			{
+				"name": "Route_ID",
+				"type": "String"
+			},
+			{
+				"name": "Take_Off_point",
+				"type": "String"
+			},
+			{
+				"name": "Destination",
+				"type": "String"
+			},
+			{
+				"name": "Ps_ID",
+				"type": "String"
+			},
+			{
+				"name": "Ps_Name",
+				"type": "String"
+			},
+			{
+				"name": "Address",
+				"type": "String"
+			},
+			{
+				"name": "Age",
+				"type": "String"
+			},
+			{
+				"name": "Sex",
+				"type": "String"
+			},
+			{
+				"name": "Contacts",
+				"type": "String"
+			},
+			{
+				"name": "Air_code",
+				"type": "String"
+			},
+			{
+				"name": "Departure_time",
+				"type": "String"
+			},
+			{
+				"name": "Arrival_time",
+				"type": "String"
+			},
+			{
+				"name": "Duration(Hours)",
+				"type": "String"
+			},
+			{
+				"name": "Total_seat_on_flight",
+				"type": "String"
+			},
+			{
+				"name": "Occupied_seat",
+				"type": "String"
+			},
+			{
+				"name": "Seat_change_fee",
+				"type": "String"
+			},
+			{
+				"name": "Ticket_Price (€)",
+				"type": "String"
+			},
+			{
+				"name": "Connecting_flights",
+				"type": "String"
+			},
+			{
+				"name": "waiting_hours",
+				"type": "String"
+			},
+			{
+				"name": "Weather_Forecast",
+				"type": "String"
+			},
+			{
+				"name": "Cancelled_Flights",
+				"type": "String"
+			},
+			{
+				"name": "Waiting_time_for_cancelled_flight",
+				"type": "String"
+			},
+			{
+				"name": "Hotel_offered",
+				"type": "String"
+			},
+			{
+				"name": "Voucher_Prices",
+				"type": "String"
+			},
+			{
+				"name": "Ticket_Changed",
+				"type": "String"
+			},
+			{
+				"name": "Flight_delayed",
+				"type": "String"
+			},
+			{
+				"name": "Change_in_price",
+				"type": "String"
+			},
+			{
+				"name": "Penalty_fee",
+				"type": "String"
+			},
+			{
+				"name": "Flight_Class",
+				"type": "String"
+			},
+			{
+				"name": "Regular_Traveler",
+				"type": "String"
+			},
+			{
+				"name": "Payment_method",
+				"type": "String"
+			},
+			{
+				"name": "Baggage_Allowance",
+				"type": "String"
+			},
+			{
+				"name": "Miles_and_More_point",
+				"type": "String"
+			}
+		]
+	}
+}
