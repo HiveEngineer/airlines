@@ -870,7 +870,8 @@
 				}
 			},
 			{
-				"name": "Archive Proc",
+				"name": "Archived files",
+				"description": "Files that are loaded into the Staging tables are moved into archive folder",
 				"type": "Copy",
 				"dependsOn": [
 					{
