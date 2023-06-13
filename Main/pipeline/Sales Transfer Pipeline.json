@@ -931,7 +931,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "SaleCsvData",
+						"referenceName": "ds_airchive_storage",
 						"type": "DatasetReference"
 					}
 				]

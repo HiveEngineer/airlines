@@ -1,0 +1,23 @@
+{
+	"name": "ds_airchive_storage",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SalesCsvDataLakeStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "archive_folder",
+				"fileSystem": "flights-details"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": false,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
