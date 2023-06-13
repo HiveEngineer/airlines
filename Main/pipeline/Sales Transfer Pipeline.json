@@ -867,12 +867,6 @@
 					"referenceName": "SalesStagingTableDB",
 					"type": "LinkedServiceReference"
 				}
-			},
-			{
-				"name": "ForEach1",
-				"type": "ForEach",
-				"dependsOn": [],
-				"userProperties": []
 			}
 		],
 		"folder": {
