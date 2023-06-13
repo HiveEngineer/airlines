@@ -1,0 +1,1595 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "flight-df"
+		},
+		"SalesCsvDataLakeStorage_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'SalesCsvDataLakeStorage'"
+		},
+		"SalesDataStorage_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'SalesDataStorage'"
+		},
+		"SalesStagingTableDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SalesStagingTableDB'"
+		},
+		"SalesCsvDataLakeStorage_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://dbfabric.dfs.core.windows.net/"
+		},
+		"SalesDataStorage_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://dbfabric.dfs.core.windows.net/"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/SalesCsvDataLakeStorage')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "This is the SalesCsvStorage connection string",
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('SalesCsvDataLakeStorage_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('SalesCsvDataLakeStorage_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SalesDataStorage')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "This storage account where the files are dropped either from email using Logic App or Uploaded ",
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('SalesDataStorage_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('SalesDataStorage_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SalesStagingTableDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('SalesStagingTableDB_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SaleCsvData')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SalesCsvDataLakeStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "*.*",
+						"fileSystem": "flights-details"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Flight_ID",
+						"type": "String"
+					},
+					{
+						"name": "Air_Name",
+						"type": "String"
+					},
+					{
+						"name": "City",
+						"type": "String"
+					},
+					{
+						"name": "Country_code",
+						"type": "String"
+					},
+					{
+						"name": "date_time",
+						"type": "String"
+					},
+					{
+						"name": "site_name",
+						"type": "String"
+					},
+					{
+						"name": "posa_continent",
+						"type": "String"
+					},
+					{
+						"name": "user_location_country",
+						"type": "String"
+					},
+					{
+						"name": "user_location_city",
+						"type": "String"
+					},
+					{
+						"name": "orig_destination_distance",
+						"type": "String"
+					},
+					{
+						"name": "user_id",
+						"type": "String"
+					},
+					{
+						"name": "is_mobile",
+						"type": "String"
+					},
+					{
+						"name": "is_package",
+						"type": "String"
+					},
+					{
+						"name": "channel",
+						"type": "String"
+					},
+					{
+						"name": "srch_ci",
+						"type": "String"
+					},
+					{
+						"name": "srch_co",
+						"type": "String"
+					},
+					{
+						"name": "srch_adults_cnt",
+						"type": "String"
+					},
+					{
+						"name": "srch_children_cnt",
+						"type": "String"
+					},
+					{
+						"name": "srch_rm_cnt",
+						"type": "String"
+					},
+					{
+						"name": "srch_destination_id",
+						"type": "String"
+					},
+					{
+						"name": "srch_destination_type_id",
+						"type": "String"
+					},
+					{
+						"name": "hotel_continent",
+						"type": "String"
+					},
+					{
+						"name": "hotel_country",
+						"type": "String"
+					},
+					{
+						"name": "hotel_market",
+						"type": "String"
+					},
+					{
+						"name": "is_booking",
+						"type": "String"
+					},
+					{
+						"name": "cnt",
+						"type": "String"
+					},
+					{
+						"name": "hotel_cluster",
+						"type": "String"
+					},
+					{
+						"name": "A_ID",
+						"type": "String"
+					},
+					{
+						"name": "Capacity",
+						"type": "String"
+					},
+					{
+						"name": "A_weight",
+						"type": "String"
+					},
+					{
+						"name": "Company",
+						"type": "String"
+					},
+					{
+						"name": "Route_ID",
+						"type": "String"
+					},
+					{
+						"name": "Take_Off_point",
+						"type": "String"
+					},
+					{
+						"name": "Destination",
+						"type": "String"
+					},
+					{
+						"name": "Ps_ID",
+						"type": "String"
+					},
+					{
+						"name": "Ps_Name",
+						"type": "String"
+					},
+					{
+						"name": "Address",
+						"type": "String"
+					},
+					{
+						"name": "Age",
+						"type": "String"
+					},
+					{
+						"name": "Sex",
+						"type": "String"
+					},
+					{
+						"name": "Contacts",
+						"type": "String"
+					},
+					{
+						"name": "Air_code",
+						"type": "String"
+					},
+					{
+						"name": "Departure_time",
+						"type": "String"
+					},
+					{
+						"name": "Arrival_time",
+						"type": "String"
+					},
+					{
+						"name": "Duration(Hours)",
+						"type": "String"
+					},
+					{
+						"name": "Total_seat_on_flight",
+						"type": "String"
+					},
+					{
+						"name": "Occupied_seat",
+						"type": "String"
+					},
+					{
+						"name": "Seat_change_fee",
+						"type": "String"
+					},
+					{
+						"name": "Ticket_Price (€)",
+						"type": "String"
+					},
+					{
+						"name": "Connecting_flights",
+						"type": "String"
+					},
+					{
+						"name": "waiting_hours",
+						"type": "String"
+					},
+					{
+						"name": "Weather_Forecast",
+						"type": "String"
+					},
+					{
+						"name": "Cancelled_Flights",
+						"type": "String"
+					},
+					{
+						"name": "Waiting_time_for_cancelled_flight",
+						"type": "String"
+					},
+					{
+						"name": "Hotel_offered",
+						"type": "String"
+					},
+					{
+						"name": "Voucher_Prices",
+						"type": "String"
+					},
+					{
+						"name": "Ticket_Changed",
+						"type": "String"
+					},
+					{
+						"name": "Flight_delayed",
+						"type": "String"
+					},
+					{
+						"name": "Change_in_price",
+						"type": "String"
+					},
+					{
+						"name": "Penalty_fee",
+						"type": "String"
+					},
+					{
+						"name": "Flight_Class",
+						"type": "String"
+					},
+					{
+						"name": "Regular_Traveler",
+						"type": "String"
+					},
+					{
+						"name": "Payment_method",
+						"type": "String"
+					},
+					{
+						"name": "Baggage_Allowance",
+						"type": "String"
+					},
+					{
+						"name": "Miles_and_More_point",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SalesCsvDataLakeStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SaleData')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SalesDataStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Excel",
+				"typeProperties": {
+					"sheetName": "mock_data",
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "mock_data.csv",
+						"fileSystem": "flights-details"
+					}
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SalesDataStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SalesStagingTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SalesStagingTableDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "Flight_ID",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Air_Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "City",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Country_code",
+						"type": "nvarchar"
+					},
+					{
+						"name": "date_time",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "site_name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "posa_continent",
+						"type": "nvarchar"
+					},
+					{
+						"name": "user_location_country",
+						"type": "nvarchar"
+					},
+					{
+						"name": "user_location_city",
+						"type": "nvarchar"
+					},
+					{
+						"name": "orig_destination_distance",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "user_id",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "is_mobile",
+						"type": "bit"
+					},
+					{
+						"name": "is_package",
+						"type": "bit"
+					},
+					{
+						"name": "channel",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "srch_ci",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "srch_co",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "srch_adults_cnt",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "srch_children_cnt",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "srch_rm_cnt",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "srch_destination_id",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "srch_destination_type_id",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "hotel_continent",
+						"type": "nvarchar"
+					},
+					{
+						"name": "hotel_country",
+						"type": "nvarchar"
+					},
+					{
+						"name": "hotel_market",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "is_booking",
+						"type": "bit"
+					},
+					{
+						"name": "cnt",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "hotel_cluster",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "A_ID",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "Capacity",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "A_weight",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Company",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Route_ID",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "Take_Off_point",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Destination",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Ps_ID",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "Ps_Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Address",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Age",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "Sex",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Contacts",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Air_code",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Departure_time",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Arrival_time",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Duration_Hours",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "Total_seat_on_flight",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "Occupied_seat",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Seat_change_fee",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Ticket_Price",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Connecting_flights",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "waiting_hours",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "Weather_Forecast",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Cancelled_Flights",
+						"type": "bit"
+					},
+					{
+						"name": "Waiting_time_for_cancelled_flight",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "Hotel_offered",
+						"type": "bit"
+					},
+					{
+						"name": "Voucher_Prices",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "Ticket_Changed",
+						"type": "bit"
+					},
+					{
+						"name": "Flight_delayed",
+						"type": "bit"
+					},
+					{
+						"name": "Change_in_price",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "Penalty_fee",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "Flight_Class",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Regular_Traveler",
+						"type": "bit"
+					},
+					{
+						"name": "Payment_method",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Baggage_Allowance",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Miles_and_More_point",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Sales"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SalesStagingTableDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Sales Transfer Pipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Load_Sales_Stage",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Truncate Sales",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "Flight_ID",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Flight_ID",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Air_Name",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Air_Name",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "City",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "City",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Country_code",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Country_code",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "site_name",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "site_name",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "posa_continent",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "posa_continent",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "user_location_country",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "user_location_country",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "user_location_city",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "user_location_city",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "orig_destination_distance",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "orig_destination_distance",
+											"type": "Int16",
+											"physicalType": "smallint"
+										}
+									},
+									{
+										"source": {
+											"name": "user_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "user_id",
+											"type": "Int16",
+											"physicalType": "smallint"
+										}
+									},
+									{
+										"source": {
+											"name": "is_mobile",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "is_mobile",
+											"type": "Boolean",
+											"physicalType": "bit"
+										}
+									},
+									{
+										"source": {
+											"name": "is_package",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "is_package",
+											"type": "Boolean",
+											"physicalType": "bit"
+										}
+									},
+									{
+										"source": {
+											"name": "channel",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "channel",
+											"type": "Byte",
+											"physicalType": "tinyint"
+										}
+									},
+									{
+										"source": {
+											"name": "srch_ci",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "srch_ci",
+											"type": "DateTime",
+											"physicalType": "datetime2"
+										}
+									},
+									{
+										"source": {
+											"name": "srch_co",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "srch_co",
+											"type": "DateTime",
+											"physicalType": "datetime2"
+										}
+									},
+									{
+										"source": {
+											"name": "srch_adults_cnt",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "srch_adults_cnt",
+											"type": "Byte",
+											"physicalType": "tinyint"
+										}
+									},
+									{
+										"source": {
+											"name": "srch_children_cnt",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "srch_children_cnt",
+											"type": "Byte",
+											"physicalType": "tinyint"
+										}
+									},
+									{
+										"source": {
+											"name": "srch_rm_cnt",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "srch_rm_cnt",
+											"type": "Byte",
+											"physicalType": "tinyint"
+										}
+									},
+									{
+										"source": {
+											"name": "srch_destination_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "srch_destination_id",
+											"type": "Byte",
+											"physicalType": "tinyint"
+										}
+									},
+									{
+										"source": {
+											"name": "srch_destination_type_id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "srch_destination_type_id",
+											"type": "Byte",
+											"physicalType": "tinyint"
+										}
+									},
+									{
+										"source": {
+											"name": "hotel_continent",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "hotel_continent",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "hotel_country",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "hotel_country",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "hotel_market",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "hotel_market",
+											"type": "Byte",
+											"physicalType": "tinyint"
+										}
+									},
+									{
+										"source": {
+											"name": "is_booking",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "is_booking",
+											"type": "Boolean",
+											"physicalType": "bit"
+										}
+									},
+									{
+										"source": {
+											"name": "cnt",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "cnt",
+											"type": "Byte",
+											"physicalType": "tinyint"
+										}
+									},
+									{
+										"source": {
+											"name": "hotel_cluster",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "hotel_cluster",
+											"type": "Byte",
+											"physicalType": "tinyint"
+										}
+									},
+									{
+										"source": {
+											"name": "A_ID",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "A_ID",
+											"type": "Int16",
+											"physicalType": "smallint"
+										}
+									},
+									{
+										"source": {
+											"name": "Capacity",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Capacity",
+											"type": "Int16",
+											"physicalType": "smallint"
+										}
+									},
+									{
+										"source": {
+											"name": "A_weight",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "A_weight",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "Company",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Company",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Route_ID",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Route_ID",
+											"type": "Int16",
+											"physicalType": "smallint"
+										}
+									},
+									{
+										"source": {
+											"name": "Take_Off_point",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Take_Off_point",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Destination",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Destination",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Ps_ID",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Ps_ID",
+											"type": "Int16",
+											"physicalType": "smallint"
+										}
+									},
+									{
+										"source": {
+											"name": "Ps_Name",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Ps_Name",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Address",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Address",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Age",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Age",
+											"type": "Byte",
+											"physicalType": "tinyint"
+										}
+									},
+									{
+										"source": {
+											"name": "Sex",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Sex",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Contacts",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Contacts",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Air_code",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Air_code",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "Departure_time",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Departure_time",
+											"type": "DateTime",
+											"physicalType": "datetime2"
+										}
+									},
+									{
+										"source": {
+											"name": "Arrival_time",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Arrival_time",
+											"type": "DateTime",
+											"physicalType": "datetime2"
+										}
+									},
+									{
+										"source": {
+											"name": "Duration(Hours)",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Duration_Hours",
+											"type": "Byte",
+											"physicalType": "tinyint"
+										}
+									},
+									{
+										"source": {
+											"name": "Total_seat_on_flight",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Total_seat_on_flight",
+											"type": "Int16",
+											"physicalType": "smallint"
+										}
+									},
+									{
+										"source": {
+											"name": "Occupied_seat",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Occupied_seat",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Seat_change_fee",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Seat_change_fee",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Ticket_Price (€)",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Ticket_Price",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Connecting_flights",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Connecting_flights",
+											"type": "Byte",
+											"physicalType": "tinyint"
+										}
+									},
+									{
+										"source": {
+											"name": "waiting_hours",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "waiting_hours",
+											"type": "Byte",
+											"physicalType": "tinyint"
+										}
+									},
+									{
+										"source": {
+											"name": "Weather_Forecast",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Weather_Forecast",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Cancelled_Flights",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Cancelled_Flights",
+											"type": "Boolean",
+											"physicalType": "bit"
+										}
+									},
+									{
+										"source": {
+											"name": "Waiting_time_for_cancelled_flight",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Waiting_time_for_cancelled_flight",
+											"type": "Byte",
+											"physicalType": "tinyint"
+										}
+									},
+									{
+										"source": {
+											"name": "Hotel_offered",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Hotel_offered",
+											"type": "Boolean",
+											"physicalType": "bit"
+										}
+									},
+									{
+										"source": {
+											"name": "Voucher_Prices",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Voucher_Prices",
+											"type": "Byte",
+											"physicalType": "tinyint"
+										}
+									},
+									{
+										"source": {
+											"name": "Ticket_Changed",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Ticket_Changed",
+											"type": "Boolean",
+											"physicalType": "bit"
+										}
+									},
+									{
+										"source": {
+											"name": "Flight_delayed",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Flight_delayed",
+											"type": "Boolean",
+											"physicalType": "bit"
+										}
+									},
+									{
+										"source": {
+											"name": "Change_in_price",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Change_in_price",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "Penalty_fee",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Penalty_fee",
+											"type": "Byte",
+											"physicalType": "tinyint"
+										}
+									},
+									{
+										"source": {
+											"name": "Flight_Class",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Flight_Class",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Regular_Traveler",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Regular_Traveler",
+											"type": "Boolean",
+											"physicalType": "bit"
+										}
+									},
+									{
+										"source": {
+											"name": "Payment_method",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Payment_method",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Baggage_Allowance",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Baggage_Allowance",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Miles_and_More_point",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Miles_and_More_point",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "SaleCsvData",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SalesStagingTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Truncate Sales",
+						"description": "This SP truncates the Sales staging table before loading new data",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[sp_TruncateSalesTable]"
+						},
+						"linkedServiceName": {
+							"referenceName": "SalesStagingTableDB",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "Load_Fact_Dim",
+						"description": "This SP loads the fact and dimension tables ",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Load_Sales_Stage",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[upsert_data]"
+						},
+						"linkedServiceName": {
+							"referenceName": "SalesStagingTableDB",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Files_to_Sales_Tables"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SaleCsvData')]",
+				"[concat(variables('factoryId'), '/datasets/SalesStagingTable')]",
+				"[concat(variables('factoryId'), '/linkedServices/SalesStagingTableDB')]"
+			]
+		}
+	]
+}

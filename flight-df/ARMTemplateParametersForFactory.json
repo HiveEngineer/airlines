@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "flight-df"
+		},
+		"SalesCsvDataLakeStorage_accountKey": {
+			"value": ""
+		},
+		"SalesDataStorage_accountKey": {
+			"value": ""
+		},
+		"SalesStagingTableDB_connectionString": {
+			"value": ""
+		},
+		"SalesCsvDataLakeStorage_properties_typeProperties_url": {
+			"value": "https://dbfabric.dfs.core.windows.net/"
+		},
+		"SalesDataStorage_properties_typeProperties_url": {
+			"value": "https://dbfabric.dfs.core.windows.net/"
+		}
+	}
+}
