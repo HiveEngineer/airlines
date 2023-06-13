@@ -872,7 +872,6 @@
 				"name": "Copy each file",
 				"type": "ForEach",
 				"dependsOn": [],
-				"userProperties": [],
 				"typeProperties": {
 					"activities": [
 						{
