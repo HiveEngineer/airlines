@@ -607,6 +607,7 @@
 									"physicalType": "nvarchar"
 								}
 							},
+							null,
 							{
 								"source": {
 									"name": "Connecting_flights",
