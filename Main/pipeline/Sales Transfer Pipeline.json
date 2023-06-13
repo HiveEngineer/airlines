@@ -559,6 +559,11 @@
 								}
 							},
 							{
+								"source": {
+									"name": "Duration(Hours)",
+									"type": "String",
+									"physicalType": "String"
+								},
 								"sink": {
 									"name": "Duration_Hours",
 									"type": "Byte",
