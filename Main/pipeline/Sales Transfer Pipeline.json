@@ -176,18 +176,6 @@
 							},
 							{
 								"source": {
-									"name": "is_mobile",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "is_mobile",
-									"type": "Boolean",
-									"physicalType": "bit"
-								}
-							},
-							{
-								"source": {
 									"name": "is_package",
 									"type": "String",
 									"physicalType": "String"
