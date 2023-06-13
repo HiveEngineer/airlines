@@ -607,6 +607,11 @@
 								}
 							},
 							{
+								"source": {
+									"name": "Ticket_Price (€)",
+									"type": "String",
+									"physicalType": "String"
+								},
 								"sink": {
 									"name": "Ticket_Price",
 									"type": "String",
